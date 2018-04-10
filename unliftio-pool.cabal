@@ -10,6 +10,10 @@ category:            Control, Data, Database, Network
 build-type:          Simple
 cabal-version:       >=1.10
 
+source-repository head
+  type: git
+  location: https://github.com/BardurArantsson/unliftio-pool
+
 library
   exposed-modules:     Unlift.Pool
   build-depends:       base >= 4.10 && < 4.11
