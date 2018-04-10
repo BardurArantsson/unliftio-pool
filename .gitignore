@@ -1,0 +1,8 @@
+*~
+.cabal-sandbox
+dist/
+dist-newstyle/
+cabal.sandbox.config
+.idea
+*.iml
+/.ghc.environment.*
