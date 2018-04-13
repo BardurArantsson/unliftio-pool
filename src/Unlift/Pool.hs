@@ -27,7 +27,7 @@ createPool create destroy stripes keepAlive maxPerStripe =
 withResource :: MonadUnliftIO m => Pool a -> (a -> m b) -> m b
 withResource pool action =
   withRunInIO $ \io ->
-    liftIO $ withResource pool $ \a ->
+    liftIO $ P.withResource pool $ \a ->
       io $ action a
 
 takeResource :: MonadUnliftIO m => Pool a -> m (a, LocalPool a)
