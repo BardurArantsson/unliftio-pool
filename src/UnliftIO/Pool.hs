@@ -1,4 +1,4 @@
-module Unlift.Pool
+module UnliftIO.Pool
   ( Pool
   , LocalPool
   , createPool

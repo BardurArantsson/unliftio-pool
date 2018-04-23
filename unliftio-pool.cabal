@@ -15,7 +15,7 @@ source-repository head
   location: https://github.com/BardurArantsson/unliftio-pool
 
 library
-  exposed-modules:     Unlift.Pool
+  exposed-modules:     UnliftIO.Pool
   build-depends:       base >= 4.10 && < 4.11
                      , resource-pool >= 0.2.3.2 && < 0.3
                      , time >= 1.8 && < 2
