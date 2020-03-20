@@ -8,7 +8,7 @@ author:              Bardur Arantsson
 maintainer:          Bardur Arantsson <bardur@scientician.net>
 category:            Control, Data, Database, Network
 build-type:          Simple
-cabal-version:       >=1.10
+cabal-version:       1.24
 
 source-repository head
   type: git
