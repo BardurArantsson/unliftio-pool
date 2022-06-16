@@ -1,5 +1,5 @@
 name:                unliftio-pool
-version:             0.2.2.0
+version:             0.3.0.0
 synopsis:            Data.Pool generalized to MonadUnliftIO.
 description:         This is a generalization of Data.Pool to MonadUnliftIO.
 license:             BSD3
