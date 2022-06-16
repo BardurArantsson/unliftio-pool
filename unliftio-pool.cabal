@@ -17,7 +17,7 @@ source-repository head
 library
   exposed-modules:     UnliftIO.Pool
   build-depends:       base >= 4.10 && < 5
-                     , resource-pool >= 0.2.3.2 && < 0.3 || >= 0.3.1.0 && < 0.4
+                     , resource-pool >= 0.3.1.0 && < 0.4
                      , time >= 1.8 && < 2
                      , transformers >= 0.5 && < 0.6
                      , unliftio-core >= 0.1.1 && < 0.3
