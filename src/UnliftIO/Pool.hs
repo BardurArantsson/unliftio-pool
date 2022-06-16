@@ -19,10 +19,30 @@ type Pool = P.Pool
 
 type LocalPool = P.LocalPool
 
+data PoolConfig a = PoolConfig
+  { createResource :: forall m . (MonadUnliftIO m => m a)
+  , freeResource :: forall m . (MonadUnliftIO m => a -> m ())
+  , poolCacheTTL :: !Double
+  , poolMaxResources :: !Int
+  }
+
+{-# DEPRECATED createPool "Use 'newPool' instead" #-}
 createPool :: MonadUnliftIO m => m a -> (a -> m ()) -> Int -> NominalDiffTime -> Int -> m (Pool a)
 createPool create destroy stripes keepAlive maxPerStripe =
   withRunInIO $ \io ->
     liftIO $ P.createPool (io create) (io . destroy) stripes keepAlive maxPerStripe
+
+newPool :: MonadUnliftIO m => PoolConfig a -> m (Pool a)
+newPool config =
+  withRunInIO $ \io ->
+    liftIO $ P.newPool config'
+  where
+    config' = P.PoolConfig
+      { P.createResource = liftIO $ createResource config
+      , P.freeResource = \a -> liftIO $ freeResource config $ a
+      , P.poolCacheTTL = poolCacheTTL config
+      , P.poolMaxResources = poolMaxResources config
+      }
 
 withResource :: MonadUnliftIO m => Pool a -> (a -> m b) -> m b
 withResource pool action =
