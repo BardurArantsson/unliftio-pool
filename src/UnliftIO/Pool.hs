@@ -1,7 +1,8 @@
 module UnliftIO.Pool
   ( Pool
+  , P.PoolConfig
+  , P.setNumStripes
   , LocalPool
-  , createPool
   , withResource
   , takeResource
   , tryWithResource
@@ -11,38 +12,23 @@ module UnliftIO.Pool
   , destroyAllResources
   ) where
 
-import           Control.Monad.IO.Unlift (MonadUnliftIO(..), liftIO)
+import           Control.Monad.IO.Unlift (MonadUnliftIO(..), liftIO, unliftIO)
 import qualified Data.Pool as P
-import           Data.Time.Clock (NominalDiffTime)
+import           Data.Pool (PoolConfig)
 
 type Pool = P.Pool
 
 type LocalPool = P.LocalPool
 
-data PoolConfig a = PoolConfig
-  { createResource :: forall m . (MonadUnliftIO m => m a)
-  , freeResource :: forall m . (MonadUnliftIO m => a -> m ())
-  , poolCacheTTL :: !Double
-  , poolMaxResources :: !Int
-  }
-
-{-# DEPRECATED createPool "Use 'newPool' instead" #-}
-createPool :: MonadUnliftIO m => m a -> (a -> m ()) -> Int -> NominalDiffTime -> Int -> m (Pool a)
-createPool create destroy stripes keepAlive maxPerStripe =
+mkDefaultPoolConfig :: MonadUnliftIO m => m a -> (a -> m ()) -> Double -> Int -> m (PoolConfig a)
+mkDefaultPoolConfig create destroy keepAlive maxOpen =
   withRunInIO $ \io ->
-    liftIO $ P.createPool (io create) (io . destroy) stripes keepAlive maxPerStripe
+    pure $ P.defaultPoolConfig (io create) (io . destroy) keepAlive maxOpen
 
 newPool :: MonadUnliftIO m => PoolConfig a -> m (Pool a)
 newPool config =
   withRunInIO $ \io ->
-    liftIO $ P.newPool config'
-  where
-    config' = P.PoolConfig
-      { P.createResource = liftIO $ createResource config
-      , P.freeResource = \a -> liftIO $ freeResource config $ a
-      , P.poolCacheTTL = poolCacheTTL config
-      , P.poolMaxResources = poolMaxResources config
-      }
+    liftIO $ P.newPool config
 
 withResource :: MonadUnliftIO m => Pool a -> (a -> m b) -> m b
 withResource pool action =
