@@ -3,6 +3,7 @@ module UnliftIO.Pool
   , P.PoolConfig
   , P.setNumStripes
   , LocalPool
+  , mkDefaultPoolConfig
   , withResource
   , takeResource
   , tryWithResource
