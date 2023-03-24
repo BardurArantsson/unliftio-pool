@@ -4,6 +4,7 @@ module UnliftIO.Pool
   , P.setNumStripes
   , LocalPool
   , mkDefaultPoolConfig
+  , newPool
   , withResource
   , takeResource
   , tryWithResource
@@ -26,6 +27,9 @@ mkDefaultPoolConfig create destroy keepAlive maxOpen =
   withRunInIO $ \io ->
     pure $ P.defaultPoolConfig (io create) (io . destroy) keepAlive maxOpen
 
+-- | Lifted version of 'P.newPool'
+--
+-- @since 0.4.2.0
 newPool :: MonadUnliftIO m => PoolConfig a -> m (Pool a)
 newPool config =
   withRunInIO $ \io ->
