@@ -18,7 +18,6 @@ library
   exposed-modules:     UnliftIO.Pool
   build-depends:       base >= 4.10 && < 5
                      , resource-pool >= 0.4 && < 0.5
-                     , transformers >= 0.5 && < 0.6
                      , unliftio-core >= 0.1.1 && < 0.3
   hs-source-dirs:      src
   default-language:    Haskell2010
